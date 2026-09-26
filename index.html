@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phantom App Interface</title>
+  <style>
+    :root {
+      --bg: #0e0e11;
+      --card-bg: #18181c;
+      --accent: #ab9ff2; /* Phantom Purple */
+      --accent-hover: #9182eb;
+      --text: #ffffff;
+      --text-dim: #a1a1aa;
+      --border: #27272a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .wallet-info {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      word-break: break-all;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+
+    .address {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Phantom dApp</h1>
+    </div>
+
+    <!-- Connect Button -->
+    <button id="connectBtn" class="btn" onclick="connectWallet()">Connect Phantom</button>
+
+    <!-- Wallet Dashboard -->
+    <div id="dashboard" class="wallet-info hidden">
+      <div class="label">Connected Address</div>
+      <div id="walletAddress" class="address">Not Connected</div>
+      
+      <button class="btn" style="margin-top: 16px; background: #27272a; color: #fff;" onclick="disconnectWallet()">
+        Disconnect
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Detect Phantom Provider
+    const getProvider = () => {
+      if ('phantom' in window) {
+        const provider = window.phantom?.solana;
+        if (provider?.isPhantom) {
+          return provider;
+        }
+      }
+      return null;
+    };
+
+    // Connect Wallet Function
+    async function connectWallet() {
+      const provider = getProvider();
+      
+      if (provider) {
+        try {
+          // Request Connection
+          const resp = await provider.connect();
+          const pubKey = resp.publicKey.toString();
+
+          // Update UI
+          document.getElementById('walletAddress').innerText = pubKey;
+          document.getElementById('connectBtn').classList.add('hidden');
+          document.getElementById('dashboard').classList.remove('hidden');
+        } catch (err) {
+          console.error("User rejected connection or error occurred:", err);
+        }
+      } else {
+        // Redirect to Phantom if mobile or not installed
+        alert("Phantom Wallet is not detected. Opening Phantom...");
+        window.open("https://phantom.app/", "_blank");
+      }
+    }
+
+    // Disconnect Wallet Function
+    async function disconnectWallet() {
+      const provider = getProvider();
+      if (provider) {
+        await provider.disconnect();
+        document.getElementById('connectBtn').classList.remove('hidden');
+        document.getElementById('dashboard').classList.add('hidden');
+      }
+    }
+
+    // Auto-connect if already trusted
+    window.addEventListener('load', async () => {
+      const provider = getProvider();
+      if (provider) {
+        try {
+          const resp = await provider.connect({ onlyIfTrusted: true });
+          document.getElementById('walletAddress').innerText = resp.publicKey.toString();
+          document.getElementById('connectBtn').classList.add('hidden');
+          document.getElementById('dashboard').classList.remove('hidden');
+        } catch (err) {
+          // Silent fail if not previously connected
+        }
+      }
+    });
+  </script>
+</body>
+</html>
