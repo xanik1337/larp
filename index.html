@@ -173,15 +173,22 @@
       letter-spacing: -0.3px;
     }
 
-    .cash-icon {
-      width: 24px;
-      height: 24px;
-      background-color: #2c2c2e;
-      border-radius: 6px;
+    /* Cash Icon Styles */
+    .cash-icon-wrapper {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: #1c1c1e;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      overflow: hidden;
+    }
+
+    .cash-icon-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .cash-amount {
@@ -357,19 +364,21 @@
       <span contenteditable="true">hhighestboy</span> ⌄
     </div>
 
-    <!-- Balance Section (Sum calculated dynamically) -->
+    <!-- Balance Section (Calculated dynamically) -->
     <div class="balance-container">
       <div class="balance-amount" id="total-balance">$125,869.61</div>
       <div class="balance-change">
-        <span class="change-value" contenteditable="true">+$0.00</span>
-        <span class="change-badge" contenteditable="true">+0.00%</span>
+        <span class="change-value" id="total-change-val">+$2,842.15</span>
+        <span class="change-badge" id="total-change-pct">+2.31%</span>
       </div>
     </div>
 
-    <!-- Cash Card -->
+    <!-- Cash Card with Image Icon (plus SVG Fallback) -->
     <div class="cash-card">
       <div class="cash-info">
-        <div class="cash-icon">💵</div>
+        <div class="cash-icon-wrapper">
+          <img class="cash-icon-img" src="cash.png" alt="Cash Icon" onerror="this.onerror=null; this.parentNode.innerHTML='<svg width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2330d158\' stroke-width=\'2.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><line x1=\'12\' y1=\'1\' x2=\'12\' y2=\'23\'/><path d=\'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6\'/></svg>';">
+        </div>
         <span>Cash</span>
       </div>
       <div class="cash-amount balance-item" contenteditable="true">$0.00</div>
@@ -396,7 +405,7 @@
         </div>
         <div class="token-right">
           <span class="token-value balance-item" contenteditable="true">$35,322.41</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
+          <span class="token-change positive change-item" contenteditable="true">+$412.30</span>
         </div>
       </div>
 
@@ -414,7 +423,7 @@
         </div>
         <div class="token-right">
           <span class="token-value balance-item" contenteditable="true">$34,843.77</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
+          <span class="token-change positive change-item" contenteditable="true">+$324.15</span>
         </div>
       </div>
 
@@ -432,7 +441,7 @@
         </div>
         <div class="token-right">
           <span class="token-value balance-item" contenteditable="true">$30,124.91</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
+          <span class="token-change positive change-item" contenteditable="true">+$263.20</span>
         </div>
       </div>
 
@@ -449,7 +458,7 @@
         </div>
         <div class="token-right">
           <span class="token-value balance-item" contenteditable="true">$25,578.52</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
+          <span class="token-change positive change-item" contenteditable="true">+$1,842.50</span>
         </div>
       </div>
     </div>
@@ -464,33 +473,46 @@
   </div>
 
   <script>
-    // JavaScript to calculate total balance sum dynamically
-    function calculateTotalBalance() {
+    function updateDashboardTotals() {
+      // Calculate Total Balance
       const balanceItems = document.querySelectorAll('.balance-item');
-      let total = 0;
+      let totalBalance = 0;
 
       balanceItems.forEach(item => {
-        // Strip out '$' and commas to convert string to a number
         const cleanValue = item.textContent.replace(/[^0-9.-]+/g, "");
-        const val = parseFloat(cleanValue) || 0;
-        total += val;
+        totalBalance += parseFloat(cleanValue) || 0;
       });
 
-      // Format back as currency ($125,869.61)
-      const formattedTotal = '$' + total.toLocaleString('en-US', {
+      document.getElementById('total-balance').textContent = '$' + totalBalance.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
 
-      document.getElementById('total-balance').textContent = formattedTotal;
+      // Calculate Total Daily Change Value & Percentage
+      const changeItems = document.querySelectorAll('.change-item');
+      let totalChange = 0;
+
+      changeItems.forEach(item => {
+        const cleanValue = item.textContent.replace(/[^0-9.-]+/g, "");
+        totalChange += parseFloat(cleanValue) || 0;
+      });
+
+      const changePct = totalBalance > 0 ? (totalChange / (totalBalance - totalChange)) * 100 : 0;
+
+      document.getElementById('total-change-val').textContent = '+$' + totalChange.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      document.getElementById('total-change-pct').textContent = '+' + changePct.toFixed(2) + '%';
     }
 
-    // Initial calculation on page load
-    calculateTotalBalance();
+    // Initial calculation
+    updateDashboardTotals();
 
-    // Re-calculate automatically whenever an editable field is changed
-    document.querySelectorAll('.balance-item').forEach(item => {
-      item.addEventListener('input', calculateTotalBalance);
+    // Recalculate on any edit
+    document.querySelectorAll('.balance-item, .change-item').forEach(item => {
+      item.addEventListener('input', updateDashboardTotals);
     });
   </script>
 
