@@ -3,179 +3,433 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phantom App Interface</title>
+  <title>Crypto Wallet UI</title>
   <style>
-    :root {
-      --bg: #0e0e11;
-      --card-bg: #18181c;
-      --accent: #ab9ff2; /* Phantom Purple */
-      --accent-hover: #9182eb;
-      --text: #ffffff;
-      --text-dim: #a1a1aa;
-      --border: #27272a;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      background-color: #000000;
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 16px;
+      padding: 10px;
     }
 
-    .container {
+    .app-container {
       width: 100%;
-      max-width: 420px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 390px;
+      height: 844px;
+      background-color: #000000;
+      border-radius: 40px;
+      border: 1px solid #1c1c1e;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      padding: 0 16px 20px 16px;
     }
 
-    .header {
-      text-align: center;
+    /* Status Bar */
+    .status-bar {
+      height: 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-btn {
+      background-color: #1c1c1e;
+      color: #8e8e93;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      background-color: #bfa3ff;
+      color: #000000;
+    }
+
+    /* Header Profile */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #8e8e93;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .profile-header span {
+      color: #ffffff;
+    }
+
+    /* Balance Section */
+    .balance-container {
+      margin-bottom: 20px;
+    }
+
+    .balance-amount {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .balance-change {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .change-value {
+      color: #ff453a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .change-badge {
+      background-color: rgba(255, 69, 58, 0.2);
+      color: #ff453a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Cash Card */
+    .cash-card {
+      background-color: #121212;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 24px;
     }
 
-    .header h1 {
-      font-size: 1.4rem;
+    .cash-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .cash-icon {
+      width: 24px;
+      height: 24px;
+      background-color: #2c2c2e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .cash-amount {
+      font-size: 16px;
+      font-weight: 600;
+      color: #8e8e93;
+    }
+
+    /* Section Header */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Tokens List */
+    .token-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding-bottom: 70px;
+    }
+
+    .token-card {
+      background-color: #121212;
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .token-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .token-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .icon-xrp {
+      background: radial-gradient(circle, #1276a7 0%, #002e5d 100%);
+      border: 1px solid #2388c7;
+    }
+    .icon-adi {
+      background: linear-gradient(135deg, #10002b 0%, #240046 50%, #e0aaff 100%);
+    }
+    .icon-sol {
+      background: linear-gradient(135deg, #00ffa3 0%, #dc1fff 100%);
+    }
+    .icon-eth {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    .token-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .token-name {
+      font-size: 16px;
       font-weight: 700;
     }
 
-    .btn {
-      width: 100%;
-      padding: 14px;
-      background-color: var(--accent);
-      color: #000;
+    .token-sub {
+      font-size: 13px;
+      color: #8e8e93;
+      margin-top: 2px;
+    }
+
+    .token-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .token-value {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .token-change {
+      font-size: 13px;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .negative {
+      color: #ff453a;
+    }
+
+    .positive {
+      color: #30d158;
+    }
+
+    /* Bottom Action Bar */
+    .bottom-bar {
+      position: absolute;
+      bottom: 20px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      background-color: #121212;
+      border-radius: 25px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 10px;
+      color: #8e8e93;
+      font-size: 15px;
+    }
+
+    .add-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #bfa3ff;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
       border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn:hover {
-      background-color: var(--accent-hover);
-    }
-
-    .wallet-info {
-      margin-top: 20px;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      word-break: break-all;
-    }
-
-    .label {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-bottom: 4px;
-    }
-
-    .address {
-      font-family: monospace;
-      font-size: 0.9rem;
-      color: var(--accent);
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="header">
-      <h1>Phantom dApp</h1>
+  <div class="app-container">
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>23:43</span>
+      <div class="status-icons">
+        <span>📶</span>
+        <span>📡</span>
+        <span>44⚡</span>
+      </div>
     </div>
 
-    <!-- Connect Button -->
-    <button id="connectBtn" class="btn" onclick="connectWallet()">Connect Phantom</button>
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+      <button class="nav-btn active">Home</button>
+      <button class="nav-btn">Trade</button>
+      <button class="nav-btn">Predict</button>
+      <button class="nav-btn">Explore</button>
+    </div>
 
-    <!-- Wallet Dashboard -->
-    <div id="dashboard" class="wallet-info hidden">
-      <div class="label">Connected Address</div>
-      <div id="walletAddress" class="address">Not Connected</div>
-      
-      <button class="btn" style="margin-top: 16px; background: #27272a; color: #fff;" onclick="disconnectWallet()">
-        Disconnect
-      </button>
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <span>hhighestboy</span> ⌄
+    </div>
+
+    <!-- Balance Section -->
+    <div class="balance-container">
+      <div class="balance-amount">$2.98</div>
+      <div class="balance-change">
+        <span class="change-value">-$0.00447671</span>
+        <span class="change-badge">-0.15%</span>
+      </div>
+    </div>
+
+    <!-- Cash Card -->
+    <div class="cash-card">
+      <div class="cash-info">
+        <div class="cash-icon">💵</div>
+        <span>Cash</span>
+      </div>
+      <div class="cash-amount">$0.00</div>
+    </div>
+
+    <!-- Section Title -->
+    <div class="section-title">
+      Tokens ›
+    </div>
+
+    <!-- Token List -->
+    <div class="token-list">
+      <!-- XRP -->
+      <div class="token-card">
+        <div class="token-left">
+          <div class="token-icon icon-xrp">✕</div>
+          <div class="token-details">
+            <span class="token-name">XRP</span>
+            <span class="token-sub">0.84186 wXRP</span>
+          </div>
+        </div>
+        <div class="token-right">
+          <span class="token-value">$1.30</span>
+          <span class="token-change negative">-$0.03</span>
+        </div>
+      </div>
+
+      <!-- ADI -->
+      <div class="token-card">
+        <div class="token-left">
+          <div class="token-icon icon-adi">▲</div>
+          <div class="token-details">
+            <span class="token-name">ADI</span>
+            <span class="token-sub">0.12775 ADI</span>
+          </div>
+        </div>
+        <div class="token-right">
+          <span class="token-value">$1.07</span>
+          <span class="token-change positive">+$0.01</span>
+        </div>
+      </div>
+
+      <!-- Solana -->
+      <div class="token-card">
+        <div class="token-left">
+          <div class="token-icon icon-sol">≡</div>
+          <div class="token-details">
+            <span class="token-name">Solana</span>
+            <span class="token-sub">0.00381 SOL</span>
+          </div>
+        </div>
+        <div class="token-right">
+          <span class="token-value">$0.46</span>
+          <span class="token-change positive">+&lt;$0.01</span>
+        </div>
+      </div>
+
+      <!-- Ethereum -->
+      <div class="token-card">
+        <div class="token-left">
+          <div class="token-icon icon-eth">◆</div>
+          <div class="token-details">
+            <span class="token-name">Ethereum</span>
+            <span class="token-sub">0.00003 ETH</span>
+          </div>
+        </div>
+        <div class="token-right">
+          <span class="token-value">$0.08</span>
+          <span class="token-change positive">+&lt;$0.01</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar with Search Prism -->
+    <div class="bottom-bar">
+      <div class="search-input">
+        🔍 <span>Search Prism</span>
+      </div>
+      <button class="add-btn">+</button>
     </div>
   </div>
 
-  <script>
-    // Detect Phantom Provider
-    const getProvider = () => {
-      if ('phantom' in window) {
-        const provider = window.phantom?.solana;
-        if (provider?.isPhantom) {
-          return provider;
-        }
-      }
-      return null;
-    };
-
-    // Connect Wallet Function
-    async function connectWallet() {
-      const provider = getProvider();
-      
-      if (provider) {
-        try {
-          // Request Connection
-          const resp = await provider.connect();
-          const pubKey = resp.publicKey.toString();
-
-          // Update UI
-          document.getElementById('walletAddress').innerText = pubKey;
-          document.getElementById('connectBtn').classList.add('hidden');
-          document.getElementById('dashboard').classList.remove('hidden');
-        } catch (err) {
-          console.error("User rejected connection or error occurred:", err);
-        }
-      } else {
-        // Redirect to Phantom if mobile or not installed
-        alert("Phantom Wallet is not detected. Opening Phantom...");
-        window.open("https://phantom.app/", "_blank");
-      }
-    }
-
-    // Disconnect Wallet Function
-    async function disconnectWallet() {
-      const provider = getProvider();
-      if (provider) {
-        await provider.disconnect();
-        document.getElementById('connectBtn').classList.remove('hidden');
-        document.getElementById('dashboard').classList.add('hidden');
-      }
-    }
-
-    // Auto-connect if already trusted
-    window.addEventListener('load', async () => {
-      const provider = getProvider();
-      if (provider) {
-        try {
-          const resp = await provider.connect({ onlyIfTrusted: true });
-          document.getElementById('walletAddress').innerText = resp.publicKey.toString();
-          document.getElementById('connectBtn').classList.add('hidden');
-          document.getElementById('dashboard').classList.remove('hidden');
-        } catch (err) {
-          // Silent fail if not previously connected
-        }
-      }
-    });
-  </script>
 </body>
 </html>
