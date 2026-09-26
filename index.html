@@ -339,7 +339,7 @@
 <body>
 
   <div class="app-container">
-    <!-- Top Navigation Container with IMG_5393.jpeg Profile Picture -->
+    <!-- Top Navigation Container with Profile Picture -->
     <div class="top-nav-container">
       <div class="profile-btn">
         <img src="IMG_5393.jpeg" alt="Profile">
@@ -357,9 +357,9 @@
       <span contenteditable="true">hhighestboy</span> ⌄
     </div>
 
-    <!-- Balance Section -->
+    <!-- Balance Section (Sum calculated dynamically) -->
     <div class="balance-container">
-      <div class="balance-amount" contenteditable="true">$0.00</div>
+      <div class="balance-amount" id="total-balance">$125,869.61</div>
       <div class="balance-change">
         <span class="change-value" contenteditable="true">+$0.00</span>
         <span class="change-badge" contenteditable="true">+0.00%</span>
@@ -372,7 +372,7 @@
         <div class="cash-icon">💵</div>
         <span>Cash</span>
       </div>
-      <div class="cash-amount" contenteditable="true">$0.00</div>
+      <div class="cash-amount balance-item" contenteditable="true">$0.00</div>
     </div>
 
     <!-- Section Title -->
@@ -382,60 +382,6 @@
 
     <!-- Token List -->
     <div class="token-list">
-      <!-- Bitcoin -->
-      <div class="token-card">
-        <div class="token-left">
-          <img class="token-icon" src="picture.png" alt="Bitcoin">
-          <div class="token-details">
-            <div class="token-name-row">
-              <span class="token-name">Bitcoin</span>
-              <span class="verified-badge">✓</span>
-            </div>
-            <span class="token-sub" contenteditable="true">0.00 BTC</span>
-          </div>
-        </div>
-        <div class="token-right">
-          <span class="token-value" contenteditable="true">$0.00</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
-        </div>
-      </div>
-
-      <!-- XRP -->
-      <div class="token-card">
-        <div class="token-left">
-          <img class="token-icon" src="picture.png" alt="XRP">
-          <div class="token-details">
-            <div class="token-name-row">
-              <span class="token-name">XRP</span>
-              <span class="verified-badge">✓</span>
-            </div>
-            <span class="token-sub" contenteditable="true">0.00 wXRP</span>
-          </div>
-        </div>
-        <div class="token-right">
-          <span class="token-value" contenteditable="true">$0.00</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
-        </div>
-      </div>
-
-      <!-- JeanPhil -->
-      <div class="token-card">
-        <div class="token-left">
-          <img class="token-icon" src="picture.png" alt="JeanPhil">
-          <div class="token-details">
-            <div class="token-name-row">
-              <span class="token-name">JeanPhil</span>
-              <span class="verified-badge">✓</span>
-            </div>
-            <span class="token-sub" contenteditable="true">0.00 JEANPHIL</span>
-          </div>
-        </div>
-        <div class="token-right">
-          <span class="token-value" contenteditable="true">$0.00</span>
-          <span class="token-change positive" contenteditable="true">+$0.00</span>
-        </div>
-      </div>
-
       <!-- Solana -->
       <div class="token-card">
         <div class="token-left">
@@ -445,11 +391,29 @@
               <span class="token-name">Solana</span>
               <span class="verified-badge">✓</span>
             </div>
-            <span class="token-sub" contenteditable="true">0.00 SOL</span>
+            <span class="token-sub" contenteditable="true">469.71 SOL</span>
           </div>
         </div>
         <div class="token-right">
-          <span class="token-value" contenteditable="true">$0.00</span>
+          <span class="token-value balance-item" contenteditable="true">$35,322.41</span>
+          <span class="token-change positive" contenteditable="true">+$0.00</span>
+        </div>
+      </div>
+
+      <!-- Bitcoin -->
+      <div class="token-card">
+        <div class="token-left">
+          <img class="token-icon" src="picture.png" alt="Bitcoin">
+          <div class="token-details">
+            <div class="token-name-row">
+              <span class="token-name">Bitcoin</span>
+              <span class="verified-badge">✓</span>
+            </div>
+            <span class="token-sub" contenteditable="true">0.5539 BTC</span>
+          </div>
+        </div>
+        <div class="token-right">
+          <span class="token-value balance-item" contenteditable="true">$34,843.77</span>
           <span class="token-change positive" contenteditable="true">+$0.00</span>
         </div>
       </div>
@@ -463,17 +427,34 @@
               <span class="token-name">Ethereum</span>
               <span class="verified-badge">✓</span>
             </div>
-            <span class="token-sub" contenteditable="true">0.00 ETH</span>
+            <span class="token-sub" contenteditable="true">16.0395 ETH</span>
           </div>
         </div>
         <div class="token-right">
-          <span class="token-value" contenteditable="true">$0.00</span>
+          <span class="token-value balance-item" contenteditable="true">$30,124.91</span>
+          <span class="token-change positive" contenteditable="true">+$0.00</span>
+        </div>
+      </div>
+
+      <!-- JeanPhil -->
+      <div class="token-card">
+        <div class="token-left">
+          <img class="token-icon" src="picture.png" alt="JeanPhil">
+          <div class="token-details">
+            <div class="token-name-row">
+              <span class="token-name">JeanPhil</span>
+            </div>
+            <span class="token-sub" contenteditable="true">25,578.52 JEANPHIL</span>
+          </div>
+        </div>
+        <div class="token-right">
+          <span class="token-value balance-item" contenteditable="true">$25,578.52</span>
           <span class="token-change positive" contenteditable="true">+$0.00</span>
         </div>
       </div>
     </div>
 
-    <!-- Bottom Bar with Search Prism -->
+    <!-- Bottom Bar -->
     <div class="bottom-bar">
       <div class="search-input">
         🔍 <span>Search Prism</span>
@@ -481,6 +462,37 @@
       <button class="add-btn">+</button>
     </div>
   </div>
+
+  <script>
+    // JavaScript to calculate total balance sum dynamically
+    function calculateTotalBalance() {
+      const balanceItems = document.querySelectorAll('.balance-item');
+      let total = 0;
+
+      balanceItems.forEach(item => {
+        // Strip out '$' and commas to convert string to a number
+        const cleanValue = item.textContent.replace(/[^0-9.-]+/g, "");
+        const val = parseFloat(cleanValue) || 0;
+        total += val;
+      });
+
+      // Format back as currency ($125,869.61)
+      const formattedTotal = '$' + total.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      document.getElementById('total-balance').textContent = formattedTotal;
+    }
+
+    // Initial calculation on page load
+    calculateTotalBalance();
+
+    // Re-calculate automatically whenever an editable field is changed
+    document.querySelectorAll('.balance-item').forEach(item => {
+      item.addEventListener('input', calculateTotalBalance);
+    });
+  </script>
 
 </body>
 </html>
