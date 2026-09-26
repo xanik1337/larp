@@ -194,26 +194,7 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 12px;
-    }
-
-    .icon-xrp {
-      background: radial-gradient(circle, #1276a7 0%, #002e5d 100%);
-      border: 1px solid #2388c7;
-    }
-    .icon-adi {
-      background: linear-gradient(135deg, #10002b 0%, #240046 50%, #e0aaff 100%);
-    }
-    .icon-sol {
-      background: linear-gradient(135deg, #00ffa3 0%, #dc1fff 100%);
-    }
-    .icon-eth {
-      background-color: #ffffff;
-      color: #000000;
+      object-fit: cover;
     }
 
     .token-details {
@@ -339,7 +320,7 @@
       <!-- XRP -->
       <div class="token-card">
         <div class="token-left">
-          <div class="token-icon icon-xrp">✕</div>
+          <img class="token-icon" src="picture.png" alt="XRP">
           <div class="token-details">
             <span class="token-name">XRP</span>
             <span class="token-sub" contenteditable="true">0.00 wXRP</span>
@@ -351,13 +332,13 @@
         </div>
       </div>
 
-      <!-- ADI -->
+      <!-- JeanPhil -->
       <div class="token-card">
         <div class="token-left">
-          <div class="token-icon icon-adi">▲</div>
+          <img class="token-icon" src="picture.png" alt="JeanPhil">
           <div class="token-details">
-            <span class="token-name">ADI</span>
-            <span class="token-sub" contenteditable="true">0.00 ADI</span>
+            <span class="token-name">JeanPhil</span>
+            <span class="token-sub" contenteditable="true">0.00 JEANPHIL</span>
           </div>
         </div>
         <div class="token-right">
@@ -369,7 +350,7 @@
       <!-- Solana -->
       <div class="token-card">
         <div class="token-left">
-          <div class="token-icon icon-sol">≡</div>
+          <img class="token-icon" src="picture.png" alt="Solana">
           <div class="token-details">
             <span class="token-name">Solana</span>
             <span class="token-sub" contenteditable="true">0.00 SOL</span>
@@ -384,7 +365,7 @@
       <!-- Ethereum -->
       <div class="token-card">
         <div class="token-left">
-          <div class="token-icon icon-eth">◆</div>
+          <img class="token-icon" src="picture.png" alt="Ethereum">
           <div class="token-details">
             <span class="token-name">Ethereum</span>
             <span class="token-sub" contenteditable="true">0.00 ETH</span>
